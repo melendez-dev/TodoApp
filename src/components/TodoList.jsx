@@ -1,21 +1,19 @@
+import React, { useContext } from 'react'
+import { TodosContext } from '../context/TodosContext'
 // import @chakra-ui/react
-import { HStack, VStack, Text, IconButton, StackDivider, Spacer } from '@chakra-ui/react'
+import { HStack, VStack, Text, IconButton, StackDivider, Spacer, Badge } from '@chakra-ui/react'
 // import icons
 import { FaTrashAlt } from 'react-icons/fa'
 
-// initialTodo
-const initialTodo = [
-  {
-    id: 1,
-    body: 'learn java'
-  },
-  {
-    id: 2,
-    body: 'learn python'
-  }
-]
-
 export default function TodoList () {
+  const { todos, filterTodo } = useContext(TodosContext)
+  if (!todos.length) {
+    return (
+      <Badge colorScheme='green' size='lg' p={3} mb='15px !important' borderRadius='lg'>
+        ¡¡NOT TODOS!!
+      </Badge>
+    )
+  }
   return (
     <VStack
       divider={<StackDivider />}
@@ -27,11 +25,11 @@ export default function TodoList () {
       alignItems='stretch'
       my='35px !important'
     >
-      {initialTodo.map((todo) => (
+      {todos.map(todo => (
         <HStack key={todo.id}>
           <Text>{todo.body}</Text>
           <Spacer />
-          <IconButton icon={<FaTrashAlt />} isRound='true' />
+          <IconButton icon={<FaTrashAlt />} isRound='true' onClick={() => filterTodo(todo.id)} />
 
         </HStack>
       ))}
